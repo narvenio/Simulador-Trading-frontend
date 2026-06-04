@@ -1,0 +1,104 @@
+.btn-pestaña-sutil{
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    z-index: 1050;
+
+    background-color: rgba(33, 37, 41, 0.7);
+    border: 1px solid rgb(255, 255, 255, 0.1);
+    border-left: none;
+
+    border-radius: 0 12px 0;
+    padding: 20px 8px;
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px); /* efecto difuminado bonito*/
+    
+}
+
+.btn-pestaña-sutil:hover{
+    background-color: rgba(33, 37, 41, 1);
+    padding-left: 12px;
+}
+
+.triangulo-flecha {
+    width: 0;
+    height: 0;
+    /* crear los bordes transparentes y eso creara la punta*/
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    /* el borde izquierdo da el color y apunta hacia la derecha¡?*/
+    border-left: 8px solid rgb(255, 255, 255, 0.6);
+    transition: border-color 0.3 ease;
+
+}
+
+.btn-pestaña-sutil:hover .triangulo-flecha{
+    border-left-color: rgba(255, 255, 255, 1);
+}
+
+
+
+
+/*.nav {
+    background-color: rgb(8, 1, 1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin: auto;
+    max-width: 1200px;
+}
+
+.nav a{
+    color: white;
+    text-decoration: none;
+}
+
+.nav a:hover{
+    color: coral;
+}
+
+.container{
+    display: flex;
+    gap: 50px;
+}
+
+.price-up {
+    color: #16c784;
+    animation: pulseUP 0.6s ease ;
+}
+
+#user-panel {
+    text-align: center;
+}
+
+#status-panel{
+    text-align: center;
+}
+
+#portfolio{
+    justify-content: center;
+}
+
+#history_balance_chart{
+    max-width: 500px;
+    max-height: 500px;
+}
+
+#transactions_chart{
+   max-width: 700px;
+   max-height: 300px;
+}
+#portfolio_chart{
+    
+    max-width: 300px;
+    max-height: 300px;
+}
+@keyframes pulseUP{
+    0% {transform: scale(1);}
+    50% {transform: scale(1.08);}
+    100% {transform: scale(1);}
+}
