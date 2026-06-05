@@ -130,11 +130,11 @@ async function CreateUser() {
         return;
     
     }
-    if (!correo_input){
+    if (!correoinput){
             alert("Debes colocar un correo");
             return;
     }
-    if (!balance_input){
+    if (!balanceinput){
         alert("Debes colocar un Saldo");
         return;
     }
@@ -156,8 +156,7 @@ async function CreateUser() {
     }
 
     activeUserId = response.id; // aqui guardas el id del usuario
-    localStorage.setItem("activeuserId", activeUserId);
-    let active_user = document.getElementById("usuario_activo").classList.remove("d-none");
+    localStorage.setItem("activeuserId", activeUserId); document.getElementById("usuario_activo").classList.remove("d-none");
    
     document.getElementById("active-usernames").textContent = username// cambias el span para mostrar el usuario que has creado
     
