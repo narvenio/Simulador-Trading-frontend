@@ -31,11 +31,11 @@ async function updateDashboard() {
     if (!activeUserId) return;
 
     await Promise.all([
-     loadBalance();
-     loadPortfolio();
-     loadTransactions();
-     loadHistoryBalance();
-     loadTransactionsChart();
+     loadBalance(),
+     loadPortfolio(),
+     loadTransactions(),
+     loadHistoryBalance(),
+     loadTransactionsChart()
 ]);
 }
 
