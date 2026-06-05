@@ -31,11 +31,11 @@ async function updateDashboard() {
     if (!activeUserId) return;
 
     await Promise.all([
-    await loadBalance();
-    await loadPortfolio();
-    await loadTransactions();
-    await loadHistoryBalance();
-    await loadTransactionsChart();
+     loadBalance();
+     loadPortfolio();
+     loadTransactions();
+     loadHistoryBalance();
+     loadTransactionsChart();
 ]);
 }
 
@@ -161,7 +161,7 @@ async function CreateUser() {
    
     document.getElementById("active-usernames").textContent = username// cambias el span para mostrar el usuario que has creado
     document.getElementById("correo-input").textContent = response.email;
-    document.getElementById("user-balance").textContent = parseFloat(data.balance).toFixed(2)+" $"; // cambias por el balance del usuario y si no tiene pues pones 0
+    document.getElementById("user-balance").textContent = parseFloat(response.balance).toFixed(2)+" $"; // cambias por el balance del usuario y si no tiene pues pones 0
     
 
     username_input.value = "";
@@ -889,7 +889,7 @@ document.getElementById("btn-portfolio").addEventListener("click", (event) => {
 function refrescarGraficas(){
     portfolioChart?.update();
     History_Balance_Chart?.update();
-    Transactions_Chart.update();
+    Transactions_Chart?.update();
     
 }
 
