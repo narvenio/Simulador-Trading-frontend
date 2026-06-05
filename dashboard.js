@@ -160,7 +160,7 @@ async function CreateUser() {
     let active_user = document.getElementById("usuario_activo").classList.remove("d-none");
    
     document.getElementById("active-usernames").textContent = username// cambias el span para mostrar el usuario que has creado
-    document.getElementById("correo-input").textContent = response.email;
+    
     document.getElementById("user-balance").textContent = parseFloat(response.balance).toFixed(2)+" $"; // cambias por el balance del usuario y si no tiene pues pones 0
     
 
