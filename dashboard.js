@@ -30,11 +30,13 @@ async function checkStatus(elementID, endpoint, label) {
 async function updateDashboard() {
     if (!activeUserId) return;
 
+    await Promise.all([
     await loadBalance();
     await loadPortfolio();
     await loadTransactions();
     await loadHistoryBalance();
     await loadTransactionsChart();
+]);
 }
 
 async function loadTransactions() {
