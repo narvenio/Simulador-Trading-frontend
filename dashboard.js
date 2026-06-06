@@ -39,6 +39,28 @@ async function updateDashboard() {
 
 }
 
+function limpiarDashboard(){
+    if (portfolioChart){
+        portfolioChart.destroy();
+        portfolioChart  = null;
+    }
+
+    if (History_Balance_Chart){
+        History_Balance_Chart.destroy();
+        History_Balance_Chart = null;
+    }
+    if (Transactions_Chart){
+        Transactions_Chart.destroy();
+        Transactions_Chart = null;
+    }
+
+    const portfolioDiv = document.getElementById("portfolio-list");
+    if (portfolioDiv) portfolioDiv.innerHTML = "";
+
+    const tableBody = document.getElementById("transactions-body");
+    if (tableBody) tableBody.innerHTML = "";
+    document.getElementById("user-balance").textContent = "0.00$"
+}
 async function loadTransactions() {
     if (!activeUserId) return;
     
@@ -120,6 +142,8 @@ async function loadBalance() {
     }
 }
 
+
+
 async function CreateUser() {
     const username_input = document.getElementById("username-input"); // obtenemos el input en js
     const correo_input = document.getElementById("correo-input");
@@ -158,6 +182,7 @@ async function CreateUser() {
         alert(response.detail);
         return;
     }
+    limpiarDashboard();
 
     activeUserId = response.id; // aqui guardas el id del usuario
     localStorage.setItem("activeuserId", activeUserId); document.getElementById("usuario_activo").classList.remove("d-none");
@@ -232,6 +257,7 @@ async function handleTransaction(type, asset_id, quantity) {
 async function loadMarket() {
     const marketDiv = document.getElementById("Market-list");
     const selector = document.getElementById("asset-selector");
+    const selector_previo = selector.value;
     selector.innerHTML = "";
     try{
         const data = await apiGet("/market");
@@ -266,11 +292,13 @@ async function loadMarket() {
             updatePriceHistory(symbolKey, currentPrice, prev_price);
             updateNavbarPrice(symbolKey, currentPrice, prev_price, percentText);
             renderMarketItem(asset,percentText, priceClass);
-        })
+        });
         
         const selectedSymbol = document.getElementById("asset-selector");
-        const simboloAMostrar = selectedSymbol.value || data.market[0]?.symbol;
-
+        //const simboloAMostrar = selectedSymbol.value || data.market[0]?.symbol;
+        const simboloAMostrar = selector_previo && data.market.some(a => a.symbol === selector_previo)
+            ? selector_previo
+            : data.market[0]?.symbol;
         selectedSymbol.value = simboloAMostrar;
         renderMarketChart(simboloAMostrar);
        
@@ -473,8 +501,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    loadMarket();
-    setInterval(loadMarket, 5000);
+    //loadMarket();
+    //setInterval(loadMarket, 5000);
+    setInterval(() => {
+        loadMarket();
+        updateDashboard();
+    }, 5000);
 
     restoreUser(); // usamos => porque tenemos que cargar varias funciones.
 
