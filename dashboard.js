@@ -612,10 +612,12 @@ async function loadPortfolio() {
 
     try {
         const data = await apiGet(`/portafolio/${activeUserId}`);
-        
+        console.log("Respuesta del portafolio:", data)
+        console.log("Tipo de datos:", typeof data, Array.isArray(data))
         portfolioDiv.innerHTML = "";
 
         data.forEach(asset => {
+            console.log("Asset recibido:", asset)
 
             const item = document.createElement("div");
             item.className = "portfolio-item";
