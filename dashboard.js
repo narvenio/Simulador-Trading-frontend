@@ -67,6 +67,10 @@ async function loadTransactions() {
             tableBody.appendChild(row);
         };
     }catch (error) {
+        const tableBody = document.getElementById("transactions-body");
+        if (tableBody){
+            tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No hay transacciones Registradas</td></tr>`;
+        }
         console.error("Error cargando las transacciones", error);
     }
 }
@@ -418,167 +422,7 @@ function renderMarketItem(asset, percentText, priceClass){
 
 
 }
-/* 
-function renderMarketItem(asset, percentText, priceClass){
-    const marketDiv = document.getElementById("Market-list");
-    const item = document.createElement("div");
-    item.className = "market-item";
-    const pricesymbol = priceClass === "price-up" ? "↑" : priceClass === "price-down" ? "↓" : "";
- 
 
-    const Buybtn = document.createElement("button"); // creamos botones comprar y vender
-    Buybtn.textContent = "Comprar";
-    Buybtn.type = "button";
-
-    const Sellbtn = document.createElement("button");
-    Sellbtn.textContent = "Vender";
-    Sellbtn.type = "button";
-
-    const amountInput = document.createElement("input"); // creamos un input individiual para cada asset
-    amountInput.type = "number";
-    amountInput.placeholder = "Cantidad";
-    amountInput.min = "0";
-
-    Buybtn.addEventListener("click",  async (event) => {
-        event.preventDefault();
-        handleTransaction("buy", asset.asset_id, parseFloat(amountInput.value))
-        
-    });
-
-    Sellbtn.addEventListener("click", async(event) => {
-        event.preventDefault();
-        handleTransaction("sell", asset.asset_id, parseFloat(amountInput.value))
-    }); 
-
-/* creamos un elemento option, le asignamos el valor del symbolo del asset y
-y que muestre el nombre del asset, y que luego se agrega la opcion en el selector*/
-/*
-    const emoji = emojis[asset.symbol] || "💰"; 
-    const title = document.createElement("strong"); //son etiquetas que estas creando con DOM
-    title.textContent = `${emoji} ${asset.name}`;
-            
-
-    const symbol = document.createElement("span");
-    symbol.textContent = ` (${asset.symbol})`;
-
-    const precio = document.createElement("p")
-    precio.textContent = `Precio: ${asset.simulated_price} ${pricesymbol} ${percentText}`;
-    precio.className = priceClass;
-// priceClass es la clase del parrafo porque servira para modificarlo en css
-
-    item.append(title, symbol, precio, amountInput, Buybtn, Sellbtn);
-    console.log("Creando item para:", asset.name, "botones:", Buybtn, Sellbtn);   
-    marketDiv.appendChild(item);
-       
-}*/
-
-
-/*async function loadMarket() {
-    const marketDiv = document.getElementById("Market-list");
-    const selector  = document.getElementById("asset-selector");
-    selector.innerHTML = "";
-    try {
-        const data = await apiGet("/market") // variable que haga el fetch a la funcion con la ruta "/market"
-        marketDiv.innerHTML = ""; // limpiamos el div, para que al mostrar algo no hay problema
-
-        data.market.forEach(asset=> { // esto es un for normal, solo que "asset" es la variable temporal y data.market entras directamente
-            const item = document.createElement("div"); // creas div con DOM y luego le pones una clase
-            item.className = "market-item";
-
-            const Buybtn = document.createElement("button"); // creamos botones comprar y vender
-            Buybtn.textContent = "Comprar";
-
-            const Sellbtn = document.createElement("button");
-            Sellbtn.textContent = "Vender";
-
-            const amountInput = document.createElement("input"); // creamos un input individiual para cada asset
-            amountInput.type = "number";
-            amountInput.placeholder = "Cantidad";
-            amountInput.min = "0";
-
-            Buybtn.addEventListener("click", () => {
-                handleTransaction("buy", asset.asset_id, parseFloat(amountInput.value))
-            });
-
-            Sellbtn.addEventListener("click", () => {
-                handleTransaction("sell", asset.asset_id, parseFloat(amountInput.value))
-            });
-
-            const option = document.createElement("option");
-            option.value = asset.symbol;
-            option.textContent = asset.name;
-            selector.appendChild(option);
- creamos un elemento option, le asignamos el valor del symbolo del asset y
-y que muestre el nombre del asset, y que luego se agrega la opcion en el selector
-            const symbolKey = asset.symbol;
-            const currentPrice = asset.simulated_price;
-            const prev_price = previousPrices[symbolKey] // variable que busca dentro del objeto el symbolo del asset
-            const percentSpan = document.getElementById("asset-porcentage");
-            let percentText = ""; // texto para los porcentajes
-            
-            let priceClass = "price-same" 
-            
-
-           
-            const selectedSymbol = document.getElementById("asset-selector").value;
-          
-           
-            if (prev_price === undefined) {
-                priceClass = "price-same"; // prev_price no existe? entonces es "price-same"
-            }
-            if (currentPrice > prev_price) { // si no lo es y existe, entonces si el precio actual es mayor al anterior = "price_up"
-                percentSpan.className = "text-success";
-            }
-            else if (currentPrice < prev_price) {              // si no lo es entonces, si el precio actual es menor al anteior = "price-down" 
-                percentSpan.className = "text-danger";
-            }
-              
-            
-            previousPrices[symbolKey] = currentPrice;
-
-            let pricesymbol = 
-            priceClass === "price-up" ? "↑": // creas variable si sube = ↑
-            priceClass === "price-down" ? "↓": ""; // sino ↓ y sino esta vacio
-
-            
-            if (prev_price !== undefined){
-                const percentChange = ((currentPrice - prev_price) / prev_price) * 100
-                percentText = `(${percentChange.toFixed(2)}%)`;
-            }
-
-            if (symbolKey === selectedSymbol){
-                percentSpan.textContent = `${percentText}`;
-                percentSpan.className = currentPrice > prev_price ? "text-success" : "text-danger";
-                document.getElementById("asset-current-price").textContent = `$${currentPrice.toFixed(2)}`;
-                document.getElementById("asset-symbol").textContent = `${symbolKey}/USD`;
-            }
-            const emoji = emojis[asset.symbol] || "💰"; 
-            const title = document.createElement("strong"); //son etiquetas que estas creando con DOM
-            title.textContent = `${emoji} ${asset.name}`;
-            
-
-            const symbol = document.createElement("span");
-            symbol.textContent = ` (${asset.symbol})`;
-
-            const precio = document.createElement("p")
-            precio.textContent = `Precio: ${asset.simulated_price} ${pricesymbol} ${percentText}`;
-            precio.className = priceClass;
-// priceClass es la clase del parrafo porque servira para modificarlo en css
-
-            item.append(title, symbol, precio, amountInput, Buybtn, Sellbtn);
-            console.log("Creando item para:", asset.name, "botones:", Buybtn, Sellbtn);   
-            marketDiv.appendChild(item);
-
-            
-            if (selectedSymbol && History_asset_chart){
-                renderMarketChart(selectedSymbol);
-            }
-        });
-    } catch (error) {
-        marketDiv.innerHTML = "No se pudo cargar el Mercado";
-    } 
-}
-*/
 async function loadHistoryBalance() {
     if (!activeUserId) return;
     const labels = [];
@@ -746,66 +590,6 @@ async function renderTransactionsChart(labels, buyData, sellData) {
     });
 
 }
-
-// async function CreateUser() {
-//     const usernameInput = document.getElementById("username-input"); // obtenemos el input en js
-//     const username_correo_input = document.getElementById("username_email-input");
-//     const username_balance_input = document.getElementById("username_balance-input");
-
-//     const username = usernameInput.value.trim(); // cuando sea un input siempre usara .VALUE
-//     const username_correo = username_correo_input.value.trim();
-//     const username_balance = username_balance_input.value.trim();
-   
-//     if (!username){
-//         alert("Debes colocar un usuario");
-//         return;
-    
-//     }
-//     if (!username_correo){
-//             alert("Debes colocar un correo");
-//             return;
-//     }
-//     if (!username_balance){
-//         alert("Debes colocar un Saldo");
-//         return;
-//     }
-   
-
-//     try {
-//         const response = await apiPOST("/users", {
-    
-//          name : username,
-//          email: username_correo,
-//          balance: username_balance
-
-         
-//     });
-
-//     if (response.detail){
-//         alert(response.detail);
-//         return;
-//     }
-
-//     activeUserId = response.id; // aqui guardas el id del usuario
-//     localStorage.setItem("activeuserId", activeUserId);
-//     document.getElementById("active-username").textContent = username; // cambias el span para mostrar el usuario que has creado
-//     document.getElementById("user-correo").textContent = response.email;
-//     document.getElementById("user-balance").textContent = response.balance.toFixed(2); // cambias por el balance del usuario y si no tiene pues pones 0
-
-//     usernameInput.value = "";
-//     username_correo_input.value = "";
-//     username_balance_input.value = "";
-
-//     await updateDashboard();
-// } catch (error) {
-//     console.error("Error Completo:", error);
-//     alert("Error Creando al Usuario:" + error.message)
-// }}
-// document.getElementById("create-user-btn").addEventListener("click", CreateUser) // obtienes el boton de html y añades un evento que al clickear activas la funcion CreateUser
-
-
-
-
 
 function limpiar(){
     const username = document.getElementById("username-input");
