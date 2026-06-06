@@ -219,6 +219,7 @@ async function handleTransaction(type, asset_id, quantity) {
         await loadPortfolio();
         await loadBalance();
         await loadHistoryBalance();
+        await updateDashboard()
     } catch (error) {
         console.error(error);
     }
