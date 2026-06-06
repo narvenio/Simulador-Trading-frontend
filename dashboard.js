@@ -57,7 +57,7 @@ async function loadTransactions() {
 
             row.innerHTML = `
             <td>${tx.type}</td>
-            <td>${asset.name}</td>
+            <td>${tx.asset.name}</td>
             <td>${tx.quantity}</td>
             <td>${tx.total_price}</td>
             <td>${new Date(tx.timestamp).toLocaleString()}</td>
