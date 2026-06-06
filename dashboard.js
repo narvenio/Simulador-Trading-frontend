@@ -889,6 +889,6 @@ function refrescarGraficas(){
     portfolioChart?.update();
     History_Balance_Chart?.update();
     Transactions_Chart?.update();
-    
+    loadTransactionsChart?.update();
 }
 
