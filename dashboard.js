@@ -30,13 +30,13 @@ async function checkStatus(elementID, endpoint, label) {
 async function updateDashboard() {
     if (!activeUserId) return;
 
-    await Promise.all([
-     loadBalance(),
-     loadPortfolio(),
-     loadTransactions(),
-     loadHistoryBalance(),
-     loadTransactionsChart()
-]);
+    
+     await loadBalance();
+     await loadPortfolio();
+     await loadTransactions();
+     await loadHistoryBalance();
+     await loadTransactionsChart();
+
 }
 
 async function loadTransactions() {
@@ -223,7 +223,8 @@ async function handleTransaction(type, asset_id, quantity) {
         await loadPortfolio();
         await loadBalance();
         await loadHistoryBalance();
-        
+        await loadTransactions();
+        await loadTransactionsChart();
     } catch (error) {
         console.error(error);
     }
