@@ -52,7 +52,7 @@ async function loadTransactions() {
         
         
         for (const tx of transactions) {
-            const asset = await apiGet(`/assets/${tx.asset_id}`);
+            
             const row = document.createElement("tr");
 
             row.innerHTML = `
@@ -889,6 +889,6 @@ function refrescarGraficas(){
     portfolioChart?.update();
     History_Balance_Chart?.update();
     Transactions_Chart?.update();
-    loadTransactionsChart?.update();
+    
 }
 
